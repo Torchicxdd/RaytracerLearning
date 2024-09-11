@@ -1,9 +1,6 @@
 #ifndef VEC3_H
 #define VEC3_H
 
-#include <cmath>
-#include <iostream>
-
 class Vec3 {
 	public:
 		double e[3];
@@ -11,9 +8,9 @@ class Vec3 {
 		Vec3() : e{ 0,0,0 } {}
 		Vec3(double e0, double e1, double e2) : e{ e0, e1, e2 } {}
 
-		double x() const { return e[0]; }
-		double y() const { return e[1]; }
-		double z() const { return e[2]; }
+		double X() const { return e[0]; }
+		double Y() const { return e[1]; }
+		double Z() const { return e[2]; }
 
 		Vec3 operator-() const { return Vec3(-e[0], -e[1], -e[2]); }
 		double operator[](int i) const { return e[i]; }
@@ -37,11 +34,11 @@ class Vec3 {
 			return *this *= 1 / t;
 		}
 
-		double length() const {
-			return std::sqrt(length_squared());
+		double Length() const {
+			return std::sqrt(Length_squared());
 		}
 
-		double length_squared() const {
+		double Length_squared() const {
 			return e[0] * e[0] + e[1] * e[1] + e[2] * e[2];
 		}
 };
@@ -57,19 +54,19 @@ inline std::ostream& operator<<(std::ostream& out, const Vec3& v) {
 }
 
 inline Vec3 operator+(const Vec3& u, const Vec3& v) {
-	return Vec3(u.x() + v.x(), u.y() + v.y(), u.z() + v.z());
+	return Vec3(u.X() + v.X(), u.Y() + v.Y(), u.Z() + v.Z());
 }
 
 inline Vec3 operator-(const Vec3& u, const Vec3& v) {
-	return Vec3(u.x() - v.x(), u.y() - v.y(), u.z() - v.z());
+	return Vec3(u.X() - v.X(), u.Y() - v.Y(), u.Z() - v.Z());
 }
 
 inline Vec3 operator*(const Vec3& u, const Vec3& v) {
-	return Vec3(u.x() * v.x(), u.y() * v.y(), u.z() * v.z());
+	return Vec3(u.X() * v.X(), u.Y() * v.Y(), u.Z() * v.Z());
 }
 
 inline Vec3 operator*(double t, const Vec3& v) {
-	return Vec3(t*v.x(), t*v.y(), t*v.z());
+	return Vec3(t*v.X(), t*v.Y(), t*v.Z());
 }
 
 inline Vec3 operator*(const Vec3& v, double t) {
@@ -80,20 +77,20 @@ inline Vec3 operator/(const Vec3& v, double t) {
 	return (1/t) * v;
 }
 
-inline double dot(const Vec3& u, const Vec3& v) {
-	return u.x() * v.x()
-		+ u.y() * v.y()
-		+ u.z() * v.z();
+inline double Dot(const Vec3& u, const Vec3& v) {
+	return u.X() * v.X()
+		+ u.Y() * v.Y()
+		+ u.Z() * v.Z();
 }
 
-inline Vec3 cross(const Vec3& u, const Vec3& v) {
-	return Vec3(u.y() * v.z() - u.z() * v.y(),
-				u.z() * v.x() - u.x() * v.z(),
-				u.x() * v.y() - u.y() * v.x());
+inline Vec3 Cross(const Vec3& u, const Vec3& v) {
+	return Vec3(u.Y() * v.Z() - u.Z() * v.Y(),
+				u.Z() * v.X() - u.X() * v.Z(),
+				u.X() * v.Y() - u.Y() * v.X());
 }
 
-inline Vec3 unit_vector(const Vec3& v) {
-	return v / v.length();
+inline Vec3 Unit_vector(const Vec3& v) {
+	return v / v.Length();
 }
 
 #endif

@@ -3,32 +3,29 @@
 
 #include "hittable.h"
 
-#include <memory>
 #include <vector>
-
-using std::make_shared;
-using std::shared_ptr;
 
 class Hittable_list : public Hittable {
 	public:
 		std::vector<shared_ptr<Hittable>> objects;
 
 		Hittable_list() {}
-		Hittable_list(shared_ptr<Hittable> object) { add(object); }
+		Hittable_list(shared_ptr<Hittable> object) { Add(object); }
 
-		void clear() { objects.clear(); }
+		void Clear() { objects.clear(); }
 
-		void add(shared_ptr<Hittable> object) {
+		void Add(shared_ptr<Hittable> object) {
 			objects.push_back(object);
 		}
 
-		bool hit(const Ray& r, double ray_tmin, double ray_tmax, HitRecord& rec) const override {
+		bool Hit(const Ray& r, Interval ray_t, HitRecord& rec) const override {
 			HitRecord temp_rec;
 			bool hit_anything = false;
-			auto closest_so_far = ray_tmax;
+			auto closest_so_far = ray_t.max;
 			
+			// Hittable Hit method
 			for (const auto& object : objects) {
-				if (object->hit(r, ray_tmin, closest_so_far, temp_rec)) {
+				if (object->Hit(r, Interval(ray_t.min, closest_so_far), temp_rec)) {
 					hit_anything = true;
 					closest_so_far = temp_rec.t;
 					rec = temp_rec;
