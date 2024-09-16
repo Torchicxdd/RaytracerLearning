@@ -41,6 +41,14 @@ class Vec3 {
 		double Length_squared() const {
 			return e[0] * e[0] + e[1] * e[1] + e[2] * e[2];
 		}
+
+		static Vec3 Random() {
+			return Vec3(Random_double(), Random_double(), Random_double());
+		}
+
+		static Vec3 Random(Interval minMax) {
+			return Vec3(Random_double(minMax.min, minMax.max), Random_double(minMax.min, minMax.max), Random_double(minMax.min, minMax.max));
+		}
 };
 
 // Point3 is just an alias for Vec3, but useful for geometric clarity in the code
