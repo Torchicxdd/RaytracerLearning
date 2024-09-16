@@ -90,11 +90,12 @@ class Camera {
             return Vec3(Random_double() - 0.5, Random_double() - 0.5, 0);
         }
 
-        // Checks to see if ray hits the sphere and returns normal colour
+        // Checks to see if ray hits an object and returns colour
         Color Ray_Color(const Ray& r, const Hittable& world) const {
             HitRecord rec;
             if (world.Hit(r, Interval(0, infinity), rec)) {
-                return 0.5 * (rec.normal + Color(1, 1, 1));
+                Vec3 direction = Random_On_Hemisphere(rec.normal);
+                return 0.5 * Ray_Color(Ray(rec.point, direction), world);
             }
 
             // Returns color between white and blue (the sky because it didn't hit)
