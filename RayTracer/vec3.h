@@ -101,4 +101,25 @@ inline Vec3 Unit_vector(const Vec3& v) {
 	return v / v.Length();
 }
 
+inline Vec3 Random_Unit_Vector() {
+	while (true) {
+		auto p = Vec3::Random(Interval(-1, 1));
+		auto lengthSquared = p.Length_squared();
+		// Floa-point abstraction leak if random vector is small enough near the center of unit circle
+		if (1e-160 < lengthSquared && lengthSquared <= 1) {
+			return p / sqrt(lengthSquared);
+		}
+	}
+}
+
+inline Vec3 Random_On_Hemisphere(const Vec3& normal) {
+	Vec3 on_unit_sphere = Random_Unit_Vector();
+	if (Dot(on_unit_sphere, normal) > 0.0) { 
+		return on_unit_sphere; // In the same hemisphere as the normal
+	}
+	else {
+		return -on_unit_sphere;
+	}
+}
+
 #endif
