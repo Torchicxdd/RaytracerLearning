@@ -8,9 +8,10 @@
 class Camera {
 	public:
         // Image
-        double aspect_ratio = 1.0; // Ratio of image width over height
-        int image_width = 100; // Rendered image width in pixel count
-        int samples_per_pixel = 10; // Count of random samples for each pixel
+        double  aspect_ratio = 1.0; // Ratio of image width over height
+        int     image_width = 100; // Rendered image width in pixel count
+        int     samples_per_pixel = 10; // Count of random samples for each pixel
+        int     max_depth = 10; // Max number of ray bounces into scene
 
         void Render(const Hittable& world) {
             Initialize();
@@ -24,7 +25,7 @@ class Camera {
                     Color pixel_color(0, 0, 0);
                     for (int sample = 0; sample < samples_per_pixel; sample++) {
                         Ray r = Get_Ray(i, j);
-                        pixel_color += Ray_Color(r, world);
+                        pixel_color += Ray_Color(r, max_depth, world);
                     }
                     Write_color(std::cout, pixel_color * pixel_samples_scale);
                 }
@@ -91,11 +92,17 @@ class Camera {
         }
 
         // Checks to see if ray hits an object and returns colour
-        Color Ray_Color(const Ray& r, const Hittable& world) const {
+        Color Ray_Color(const Ray& r, int depth, const Hittable& world) const {
+            // If we've exceeded the ray bounce limit, no more light is gathered.
+            if (depth <= 0) {
+                return Color(0, 0, 0);
+            }
+
             HitRecord rec;
+
             if (world.Hit(r, Interval(0, infinity), rec)) {
                 Vec3 direction = Random_On_Hemisphere(rec.normal);
-                return 0.5 * Ray_Color(Ray(rec.point, direction), world);
+                return 0.5 * Ray_Color(Ray(rec.point, direction), depth-1, world);
             }
 
             // Returns color between white and blue (the sky because it didn't hit)
