@@ -101,8 +101,8 @@ class Camera {
             HitRecord rec;
 
             if (world.Hit(r, Interval(0.001, infinity), rec)) {
-                Vec3 direction = Random_On_Hemisphere(rec.normal);
-                return 0.5 * Ray_Color(Ray(rec.point, direction), depth-1, world);
+                Vec3 direction = rec.normal + Random_Unit_Vector();
+                return 0.9 * Ray_Color(Ray(rec.point, direction), depth-1, world);
             }
 
             // Returns color between white and blue (the sky because it didn't hit)

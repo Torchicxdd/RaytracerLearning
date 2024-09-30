@@ -105,7 +105,7 @@ inline Vec3 Random_Unit_Vector() {
 	while (true) {
 		auto p = Vec3::Random(Interval(-1, 1));
 		auto lengthSquared = p.Length_squared();
-		// Floa-point abstraction leak if random vector is small enough near the center of unit circle
+		// Float-point abstraction leak if random vector is small enough near the center of unit circle
 		if (1e-160 < lengthSquared && lengthSquared <= 1) {
 			return p / sqrt(lengthSquared);
 		}
