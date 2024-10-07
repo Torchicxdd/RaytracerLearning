@@ -1,10 +1,14 @@
 #ifndef HITTABLE_H
 #define HITTABLE_H
 
+// We add this to tell the compiler that material is a class defined later
+class material;
+
 class HitRecord {
 	public:
 		Point3 point;
 		Vec3 normal;
+		shared_ptr<material> mat;
 		double t;
 		bool front_face;
 
