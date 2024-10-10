@@ -35,4 +35,20 @@ class Lambertian : public Material {
 		Color albedo;
 };
 
+class Metal : public Material {
+	public:
+		Metal(const Color& albedo) : albedo(albedo) {}
+
+		bool Scatter(const Ray& ray_in, const HitRecord& rec, Color& attenuation, Ray& scattered)
+		const override {
+			Vec3 reflected = Reflect(ray_in.Direction(), rec.normal);
+			scattered = Ray(rec.point, reflected);
+			attenuation = albedo;
+			return true;
+		}
+
+	private:
+		Color albedo;
+};
+
 #endif

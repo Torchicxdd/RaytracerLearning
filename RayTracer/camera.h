@@ -1,9 +1,8 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include "rtweekend.h"
-
 #include "hittable.h"
+#include "material.h"
 
 class Camera {
 	public:
@@ -101,8 +100,12 @@ class Camera {
             HitRecord rec;
 
             if (world.Hit(r, Interval(0.001, infinity), rec)) {
-                Vec3 direction = rec.normal + Random_Unit_Vector();
-                return 0.5 * Ray_Color(Ray(rec.point, direction), depth-1, world);
+                Ray scattered;
+                Color attenuation;
+                if (rec.mat->Scatter(r, rec, attenuation, scattered)) {
+                    return attenuation * Ray_Color(scattered, depth - 1, world);
+                }
+                return Color(0,0,0);
             }
 
             // Returns color between white and blue (the sky because it didn't hit)
